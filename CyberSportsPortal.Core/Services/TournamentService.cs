@@ -1,4 +1,5 @@
-﻿using CyberSportsPortal.Core.Mappers;
+﻿using System;
+using CyberSportsPortal.Core.Mappers;
 using CyberSportsPortal.Core.OlympiadServices;
 using CyberSportsPortal.Data;
 using CyberSportsPortal.Data.Entities;
@@ -36,7 +37,8 @@ public class TournamentService
     {
         return await _context.Tournaments
             .Include(x => x.TeamParticipantInfos)
-                .ThenInclude(x => x.Team)
+            .ThenInclude(x => x.Team)
+            .Where(x => x.EndDate <= DateTime.UtcNow)
             .OrderByDescending(x => x.EndDate)
             .FirstAsync();
     }
